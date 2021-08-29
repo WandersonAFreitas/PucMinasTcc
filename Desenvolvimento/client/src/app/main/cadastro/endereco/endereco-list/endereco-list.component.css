@@ -1,0 +1,6 @@
+.cdk-column-Actions,
+.cdk-column-Id,
+.cdk-column-CEP,
+.cdk-column-Numero  {
+    flex: 0 0 100px;
+}

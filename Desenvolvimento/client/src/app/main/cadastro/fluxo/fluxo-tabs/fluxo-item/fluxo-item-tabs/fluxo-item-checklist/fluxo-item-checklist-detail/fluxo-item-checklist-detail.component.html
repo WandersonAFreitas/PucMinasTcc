@@ -1,0 +1,34 @@
+<div class="dialog-content-wrapper">
+
+    <mat-toolbar class="mat-accent m-0">
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">{{ id ? 'Editar' : 'Adicionar'}} checklist</span>
+            <button mat-icon-button (click)="thisDialogRef.close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+    <div mat-dialog-content class="p-16 pb-0 m-0" fusePerfectScrollbar>
+        <form [formGroup]="formGroup" class="event-form w-100-p" fxLayout="column" fxFlex novalidate>
+
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                <mat-form-field appearance="outline" fxFlex="100" class="pr-4">
+                    <mat-label>Descrição</mat-label>
+                    <input matInput formControlName="nome" required>
+                    <mat-error *ngIf="formGroup.controls.nome.errors">A descrição é obrigatória</mat-error>
+                </mat-form-field>
+            </div>
+
+        </form>
+    </div>
+
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+        <button type="button" mat-raised-button color="primary" [disabled]="formGroup.invalid"
+            (click)="save(formGroup.value, formGroup.valid)">
+            {{id ? 'Atualizar' : 'Salvar' }}
+        </button>
+        <span fxFlex></span>
+        <button type="button" mat-raised-button color="basic" (click)="onCloseCancel()">Fechar</button>
+    </div>
+</div>

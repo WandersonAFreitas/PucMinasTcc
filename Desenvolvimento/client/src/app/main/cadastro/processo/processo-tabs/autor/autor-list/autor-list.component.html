@@ -1,0 +1,66 @@
+<div class="animated fadeIn">
+    <mat-card-content>
+        <div [formGroup]="formGroupAutor">
+
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                <div fxFlex="70" class="pr-4">
+                    <app-input-autocomplete [formGroup]="formGroupAutor" formControlName="autorNome"
+                        formControKey="autorId" [service]="_autorService" [gridSettingsModel]="gridSettingsModelAutor"
+                        selectKey="id" selectValue="nome" pH="Buscar Autor" ngDefaultControl>
+                    </app-input-autocomplete>
+                </div>
+                <div fxFlex="15" class="pr-4">
+                    <button [disabled]="!formGroupAutor.controls.autorId.value" type="button"
+                        matTooltip="Adicionar Autor selecionado" matTooltipPosition="above" mat-mini-fab color="primary"
+                        class="mr-1" (click)="addAutorSelecionado()">
+                        <mat-icon>person_add</mat-icon>
+                    </button>
+                </div>
+                <div fxFlex="15" class="pr-4">
+                    <button type="button" matTooltip="Adicionar novo Autor" matTooltipPosition="above" mat-mini-fab
+                        color="primary" class="mr-1" (click)="addNovoAutor()">
+                        <mat-icon>add</mat-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </mat-card-content>
+    <mat-card-content>
+        <mat-table [dataSource]="dataSource" matSort (matSortChange)="baseSortData($event)" class="mat-elevation-z1">
+
+            <ng-container matColumnDef="Autor.Nome">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> Nome </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element?.autor?.nome}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="Autor.Cpf">
+                <mat-header-cell *matHeaderCellDef mat-sort-header> CPF </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element?.autor?.cpf}} </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="Actions">
+                <mat-header-cell *matHeaderCellDef class="text-center"> Ação </mat-header-cell>
+                <mat-cell *matCellDef="let element" class="text-center">
+                    <button type="button" mat-icon-button (click)="edit(element)" matTooltip="Editar">
+                        <mat-icon color="accent" aria-label="Example icon-button with a face icon">mode_edit</mat-icon>
+                    </button>
+                    <button type="button" mat-icon-button (click)="delete(element)" matTooltip="Excluir">
+                        <mat-icon color="warn" aria-label="Example icon-button with a face icon">delete</mat-icon>
+                    </button>
+                </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
+
+        <mat-card *ngIf="pagination.totalElements == 0">Nenhum Resultado Encontrado.</mat-card>
+    </mat-card-content>
+
+    <mat-card-actions>
+        <mat-paginator #paginator [pageSizeOptions]="[10, 25, 50, 100]" [length]="pagination.totalElements"
+            [pageSize]="pagination.size" [showFirstLastButtons]="true" [hidePageSize]="false">
+        </mat-paginator>
+    </mat-card-actions>
+
+</div>

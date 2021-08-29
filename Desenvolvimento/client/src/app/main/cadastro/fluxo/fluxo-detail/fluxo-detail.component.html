@@ -1,0 +1,119 @@
+<div class="page-layout simple fullwidth animated fadeIn">
+
+    <!-- HEADER -->
+    <div class="header accent p-24 h-160" fxLayout="row" fxLayoutAlign="space-between center">
+
+        <div fxLayout="column" fxLayoutAlign="center start">
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="secondary-text s-18">home</mat-icon>
+                <mat-icon class="secondary-text s-16">chevron_right</mat-icon>
+                <span class="secondary-text">Cadastro</span>
+                <mat-icon class="secondary-text s-16">chevron_right</mat-icon>
+                <span class="secondary-text">{{ id ? 'Edição' : 'Criação'}}</span>
+            </div>
+            <div class="h2 mt-16">Fluxo</div>
+        </div>
+
+        <div>
+            <mat-card-actions>
+                <button type="button" mat-raised-button color="primary" [disabled]="formGroup.invalid"
+                    (click)="form.ngSubmit.emit()">
+                    {{id ? 'Atualizar' : 'Salvar' }}
+                </button>
+                <button type="button" mat-raised-button color="basic" (click)="goBack()">
+                    Voltar
+                </button>
+
+                <button type="button" mat-raised-button color="basic" (click)="copiarFluxo()" *ngIf="id">
+                    Copiar Fluxo
+                </button>
+            </mat-card-actions>
+        </div>
+
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT -->
+    <div class="content p-24">
+
+        <div class="mb-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-md="row">
+
+            <form #form="ngForm" class="mat-card p-24 mr-24" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto"
+                name="form" [formGroup]="formGroup" (ngSubmit)="save(formGroup.value, formGroup.valid)" novalidate>
+
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                    <mat-form-field *ngIf="id" appearance="outline" fxFlex="50" class="pr-4">
+                        <mat-label>Código</mat-label>
+                        <input [disabled]="true" matInput formControlName="id">
+                    </mat-form-field>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                    <mat-form-field appearance="outline" fxFlex="75" class="pr-4">
+                        <mat-label>Descrição</mat-label>
+                        <input matInput formControlName="descricao" required>
+                        <mat-error *ngIf="formGroup.controls.descricao.errors">A descrição é obrigatória</mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex="25" class="pr-4" class="mat-form-field--no-underline">
+                        <mat-label>Ativo?</mat-label>
+                        <input matInput style="display: none" value="-">
+                        <mat-checkbox formControlName="ativo"></mat-checkbox>
+                    </mat-form-field>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                    <mat-form-field appearance="outline" fxFlex="100" class="pr-4">
+                        <mat-label>Observação</mat-label>
+                        <input matInput formControlName="observacao" required>
+                        <mat-error *ngIf="formGroup.controls.observacao.errors">A observação é obrigatória
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                    <mat-form-field appearance="outline" fxFlex="100" class="pr-4" class="mat-form-field--no-underline">
+                        <mat-label>Tramitar em?</mat-label>
+                        <input matInput style="display: none" value="-">
+                        <mat-radio-group formControlName="tramitarEm" required>
+                            <mat-radio-button [value]="1">Setores da empresa do processo</mat-radio-button>
+                            <mat-radio-button [value]="2">Entre setores de todas as empresas</mat-radio-button>
+                            <mat-radio-button [value]="3">Fluxo definido</mat-radio-button>
+                        </mat-radio-group>
+                    </mat-form-field>
+                </div>
+
+                <div class="content-card">
+                    <mat-tab-group>
+                        <mat-tab label="Assunto" [disabled]="!id">
+                            <mat-card-content class="mt-1" *ngIf="id">
+                                <app-fluxo-assunto-list [fluxoId]="id"></app-fluxo-assunto-list>
+                            </mat-card-content>
+                        </mat-tab>
+                        <mat-tab label="Situações" [disabled]="!id">
+                            <mat-card-content class="mt-1" *ngIf="id">
+                                <app-fluxo-situacao-list [fluxoId]="id"></app-fluxo-situacao-list>
+                            </mat-card-content>
+                        </mat-tab>
+                        <mat-tab label="Ações" [disabled]="!id">
+                            <mat-card-content class="mt-1" *ngIf="id">
+                                <app-fluxo-acao-list [fluxoId]="id"></app-fluxo-acao-list>
+                            </mat-card-content>
+                        </mat-tab>
+                        <mat-tab label="Tipos de anexo" [disabled]="!id">
+                            <mat-card-content class="mt-1" *ngIf="id">
+                                <app-fluxo-tipo-anexo-list [fluxoId]="id"></app-fluxo-tipo-anexo-list>
+                            </mat-card-content>
+                        </mat-tab>
+                        <mat-tab label="Configuração de fluxo" [disabled]="!id"
+                            *ngIf="formGroup.controls.tramitarEm.value == 3">
+                            <app-fluxo-item-list [fluxoId]="id" (tabItem)="reciverTabItem($event)" *ngIf="!tabItem">
+                            </app-fluxo-item-list>
+                            <app-fluxo-item-detail [fluxoId]="id" (tabItem)="reciverTabItem($event)" *ngIf="tabItem">
+                            </app-fluxo-item-detail>
+                        </mat-tab>
+                    </mat-tab-group>
+                </div>
+            </form>
+
+        </div>
+    </div>
+    <!-- / CONTENT -->
+
+</div>

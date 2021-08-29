@@ -1,0 +1,123 @@
+<div class="page-layout simple fullwidth animated fadeIn">
+
+    <!-- HEADER -->
+    <div class="header accent p-24 h-160" fxLayout="row" fxLayoutAlign="space-between center">
+
+        <div fxLayout="column" fxLayoutAlign="center start">
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="secondary-text s-18">home</mat-icon>
+                <mat-icon class="secondary-text s-16">chevron_right</mat-icon>
+                <span class="secondary-text">Cadastro</span>
+                <mat-icon class="secondary-text s-16">chevron_right</mat-icon>
+                <!-- <span class="secondary-text">{{ id ? 'Edição' : 'Criação'}}</span> -->
+                <span class="secondary-text">Detalhes de assunto</span>
+            </div>
+            <div class="h2 mt-16">Ação</div>
+        </div>
+
+        <div>
+            <mat-card-actions>
+                <!-- <button type="button" mat-raised-button color="primary" [disabled]="formGroup.invalid"
+                    (click)="form.ngSubmit.emit()">
+                    {{id ? 'Atualizar' : 'Salvar' }}
+                </button> -->
+                <button type="button" mat-raised-button color="basic" (click)="goBack()">
+                    Voltar
+                </button>
+            </mat-card-actions>
+        </div>
+
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT -->
+    <div class="content p-24">
+
+        <div class="mb-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-md="row">
+
+            <form #form="ngForm" class="mat-card p-24 mr-24" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto"
+                name="form" [formGroup]="formGroup" novalidate>
+                <!-- (ngSubmit)="save(formGroup.value, formGroup.valid)" -->
+
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                    <mat-form-field appearance="outline" fxFlex="40" class="pr-4">
+                        <mat-label>Nome</mat-label>
+                        <input matInput formControlName="nome" required>
+                        <mat-error *ngIf="formGroup.controls.nome.errors">O nome é obrigatório</mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex="40" class="pr-4">
+                        <mat-label>Empresa</mat-label>
+                        <input matInput formControlName="empresaNome" required>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex="20" class="pr-4" class="mat-form-field--no-underline">
+                        <mat-label>Ativo?</mat-label>
+                        <input matInput style="display: none" value="-">
+                        <mat-checkbox formControlName="ativo"></mat-checkbox>
+                    </mat-form-field>
+                </div>
+
+
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+
+                    <mat-form-field appearance="outline" fxFlex="100" class="pr-4">
+                        <mat-label>Orientação</mat-label>
+                        <textarea matInput formControlName="orientacoes"> </textarea>
+                        <mat-error *ngIf="formGroup.controls.orientacoes.errors">A orientação é obrigatória</mat-error>
+                    </mat-form-field>
+
+                </div>
+
+                <div class="content-card">
+                    <mat-accordion class="full-width">
+                        <mat-expansion-panel>
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>
+                                    Modelos Anexados
+                                </mat-panel-title>
+                                <mat-panel-description>
+                                    Modelos anexados para o assunto
+                                </mat-panel-description>
+                            </mat-expansion-panel-header>
+
+                            <mat-card-content>
+                                <p *ngIf="!arquivos?.length">Não há nenhum modelo anexado para esse assunto</p>
+                                <mat-table *ngIf="arquivos?.length" [dataSource]="dataSourceArquivos">
+                                    <ng-container matColumnDef="ArquivoNome">
+                                        <mat-header-cell class="mat-header-medium no-wrap" *matHeaderCellDef> Nome do
+                                            Arquivo
+                                        </mat-header-cell>
+                                        <mat-cell class="mat-cell-medium no-wrap" *matCellDef="let arquivo">
+                                            {{arquivo.nome}}
+                                        </mat-cell>
+                                    </ng-container>
+                                    <ng-container matColumnDef="Actions">
+                                        <mat-header-cell class="mat-header-small" *matHeaderCellDef>Ações
+                                        </mat-header-cell>
+                                        <mat-cell class="mat-cell-small" *matCellDef="let arquivo" class="text-center">
+                                            <button type="button" mat-icon-button (click)="downloadArquivo(arquivo)"
+                                                matTooltip="Baixar Modelo" [disabled]="!arquivo.id">
+                                                <mat-icon aria-label="icon-button with a face icon">cloud_download
+                                                </mat-icon>
+                                            </button>
+                                        </mat-cell>
+                                    </ng-container>
+                                    <mat-header-row *matHeaderRowDef="displayedColumnsArquivos"></mat-header-row>
+                                    <mat-row *matRowDef="let row; columns: displayedColumnsArquivos;"></mat-row>
+                                </mat-table>
+                            </mat-card-content>
+
+                            <div class="text-center">
+                                <mat-card-actions>
+                                </mat-card-actions>
+                            </div>
+
+                        </mat-expansion-panel>
+                    </mat-accordion>
+                </div>
+            </form>
+
+        </div>
+    </div>
+    <!-- / CONTENT -->
+
+</div>

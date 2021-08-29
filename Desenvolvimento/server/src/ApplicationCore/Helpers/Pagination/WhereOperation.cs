@@ -1,0 +1,38 @@
+﻿namespace ApplicationCore.Helpers.Pagination
+{
+    public enum WhereOperation
+    {
+        [StringValue("eq")]
+        Equal,
+        [StringValue("ne")]
+        NotEqual,
+        [StringValue("lt")]
+        LessThan,
+        [StringValue("le")]
+        LessThanOrEqual,
+        [StringValue("gt")]
+        GreaterThan,
+        [StringValue("ge")]
+        GreaterThanOrEqual,
+        [StringValue("bw")]
+        BeginsWith,
+        [StringValue("bn")]
+        NotBeginsWith,
+        [StringValue("in")]
+        In,
+        [StringValue("ni")]
+        NotIn,
+        [StringValue("ew")]
+        EndWith,
+        [StringValue("en")]
+        NotEndWith,
+        [StringValue("cn")]
+        Contains,
+        [StringValue("nc")]
+        NotContains,
+        [StringValue("nu")]
+        Null,
+        [StringValue("nn")]
+        NotNull
+    }
+}

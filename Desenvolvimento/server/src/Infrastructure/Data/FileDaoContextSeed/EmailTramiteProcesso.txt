@@ -1,0 +1,51 @@
+﻿    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <table class="m_9087676017291109346MsoNormalTable" border="0" cellspacing="0" cellpadding="0" width="696" style="color: rgb(34, 34, 34); font-family: Roboto, RobotoDraft, Helvetica, Arial, sans-serif; font-size: small; width: 522.15pt; background: whitesmoke;">
+        <tbody>
+            <tr>
+                <td width="685" colspan="7" style="margin: 0px; width: 513.55pt; padding: 3.75pt;"></td>
+                <td width="11" style="margin: 0px; width: 8.6pt; padding: 0cm;">
+                    <p class="MsoNormal">&nbsp;<u></u><u></u></p>
+                </td>
+            </tr>
+            <tr>
+                <td width="16" style="margin: 0px; width: 12pt; padding: 3.75pt;">
+                    <p class="MsoNormal">&nbsp;<u></u><u></u></p>
+                </td>
+                <td width="669" colspan="6" style="margin: 0px; width: 501.55pt; padding: 3.75pt;"><p class="MsoNormal" align="center" style="text-align: center;"><font color="#ff0000"><span style="font-size: 18px;"><b>@Assunto</b></span></font></p></td><td width="11" style="margin: 0px; width: 8.6pt; padding: 0cm;"><p class="MsoNormal">&nbsp;<u></u><u></u></p>
+                </td>
+            </tr>
+            <tr>
+                <td width="16" style="margin: 0px; width: 12pt; padding: 3.75pt;">
+                    <p class="MsoNormal"><u></u>&nbsp;<u></u></p>
+                    <p class="MsoNormal"><span style="font-size: 11pt; font-family: Calibri, sans-serif;"><u></u>&nbsp;<u></u></span></p>
+                    <p class="MsoNormal">&nbsp;<u></u><u></u></p>
+                </td>
+                <td width="657" colspan="5" style="margin: 0px; width: 492.55pt; padding: 3.75pt;">
+                    <p><u></u>&nbsp;<u></u></p>
+                    <p style="margin-bottom: 12pt;"><span style="font-size: 10pt; font-family: Calibri, sans-serif;">Prezado Cliente:</span></p><p style="margin-bottom: 12pt;"><span style="font-family: Calibri, sans-serif; font-size: 10pt;">@Mensagem</span></p><p style="margin-bottom: 12pt;"><span style="font-family: Calibri, sans-serif; font-size: 10pt;">Atenciosamente.</span><br></p><p class="MsoNormal"><u></u></p>
+                    <p class="MsoNormal"><span style="font-size: 10pt; font-family: Calibri, sans-serif;"><br></span>
+                    </p>
+                </td>
+                <td width="23" colspan="2" style="margin: 0px; width: 17.6pt; padding: 3.75pt;">
+                    <p class="MsoNormal">&nbsp;<u></u><u></u></p>
+                </td>
+            </tr>
+            <tr>
+                <td width="685" colspan="7" style="margin: 0px; width: 513.55pt; padding: 3.75pt;">
+                    <div class="MsoNormal" align="center" style="margin: 0px; text-align: center;"><span style="font-size: 10pt; font-family: &quot;Trebuchet MS&quot;, sans-serif; color: black;">
+                            <hr size="5" width="100%" noshade="" align="center" style="color: rgb(221, 0, 0);"></span>
+                    </div>
+                </td>
+                <td width="11" style="margin: 0px; width: 8.6pt; padding: 0cm;">
+                    <p class="MsoNormal">&nbsp;<u></u><u></u></p>
+                </td>
+            </tr>
+            <tr>
+                <td width="685" colspan="7" style="margin: 0px; width: 513.55pt; padding: 3.75pt;"><sup>@SCA - v.1.0</sup></td>
+            </tr>
+        </tbody>
+    </table>

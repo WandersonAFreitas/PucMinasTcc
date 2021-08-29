@@ -1,0 +1,24 @@
+.cdk-column-Actions  {
+    flex: 0 0 90px;
+}
+
+.cdk-column-Obrigatorio  {
+  flex: 0 0 70px;
+}
+
+.cdk-column-Assinatura  {
+  flex: 0 0 70px;
+}
+
+
+.icon-tool-tip {
+    padding-top: 10px;
+}
+
+.paddingTop0 {
+    padding-top: 0px;
+  }
+  
+  .paddingTop4 {
+    padding-top: 4px;
+  }

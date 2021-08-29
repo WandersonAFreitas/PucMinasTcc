@@ -1,0 +1,68 @@
+<div class="animated fadeIn">
+  <div class="text-center" *ngIf='add'>
+    <mat-card-actions>
+      <!-- <button type="button" matTooltip="Fechar todos sub setores" matTooltipPosition="above" mat-mini-fab color="basic"
+            class="mr-1" (click)="closeAll()">
+            <mat-icon>unfold_less</mat-icon>
+          </button> -->
+      <!-- <button type="button" matTooltip="Abrir todos sub setores" matTooltipPosition="above" mat-mini-fab color="basic"
+            class="mr-1" (click)="openAll()">
+            <mat-icon>unfold_more</mat-icon>
+          </button> -->
+      <button type="button" matTooltip="Adicionar novo setor" matTooltipPosition="above" mat-mini-fab color="primary"
+        class="mr-1" (click)="adicionaNovoSetor()">
+        <mat-icon>add</mat-icon>
+      </button>
+      <!-- <button type="button" mat-raised-button color="primary" (click)="adicionaNovoSetor()">
+            Adicionar novo setor
+          </button> -->
+    </mat-card-actions>
+  </div>
+  <mat-table #table [dataSource]="getRows(table, setores)" class="my-table" [@animateStagger]="{value:'50'}" fusePerfectScrollbar>
+
+    <ng-container matColumnDef="Sigla">
+      <mat-header-cell *matHeaderCellDef> Sigla do setor </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.sigla}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="Nome">
+      <mat-header-cell *matHeaderCellDef> Nome do setor </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.nome}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="Ativo">
+      <mat-header-cell *matHeaderCellDef> Ativo? </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.ativo ? 'Sim' : 'Não'}} </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="Action">
+      <mat-header-cell *matHeaderCellDef class="text-center"> Ação </mat-header-cell>
+      <mat-cell *matCellDef="let element" class="text-center">
+        <button type="button" mat-icon-button (click)="adicionaNovoSetor(element)" matTooltip="Adicionar Sub-Setor">
+          <mat-icon aria-label="icon-button with a face icon">playlist_add</mat-icon>
+        </button>
+        <button type="button" mat-icon-button (click)="alterarSetor(element)" matTooltip="Editar Setor">
+          <mat-icon color="accent" aria-label="icon-button with a face icon">mode_edit</mat-icon>
+        </button>
+        <button type="button" mat-icon-button color="warn" (click)="removeSetor(element)" matTooltip="Excluir Setor">
+          <mat-icon aria-label="icon-button with a face icon">delete</mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="expandedDetail">
+      <mat-cell *matCellDef="let detail">
+        <mat-card class="full-width mat-elevation-z12">
+          <empresa-tab-setor-grid [empresa]="empresa" [setores]="detail.element.setoresFilhos"></empresa-tab-setor-grid>
+        </mat-card>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+    <mat-row *matRowDef="let element; let i = index; columns: displayedColumns;" matRipple class="element-row" (click)="toggleRow(table, i, $event, 1)"></mat-row>
+    <mat-row *matRowDef="let row; let i = index; columns: ['expandedDetail']; when: isExpansionDetailRow"
+      [@detailExpand]="row.element['show_'+ (i-1) + '_1'] ? 'expanded' : 'collapsed'" style="overflow: hidden">
+    </mat-row>
+  </mat-table>
+</div>

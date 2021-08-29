@@ -1,0 +1,246 @@
+<div class="dialog-content-wrapper">
+
+    <mat-toolbar class="mat-accent m-0">
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">{{ id ? (!data.detailsOnly ? 'Edição' : 'Detalhes') : 'Criação'}} de
+                Tramite</span>
+            <button mat-icon-button (click)="thisDialogRef.close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+
+    <div mat-dialog-content class="p-16 pb-0 m-0" fusePerfectScrollbar>
+        <form [formGroup]="formGroup" class="event-form w-100-p" fxLayout="column" fxFlex novalidate>
+
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                <div fxFlex="50" class="pr-4">
+                    <app-input-select [formGroup]="formGroup" [elements]="cmbAcoes" formControlName="acaoId" pH="Ação"
+                        selectKey="id" selectValue="nome" required ngDefaultControl>
+                    </app-input-select>
+                </div>
+
+                <div fxFlex="50" class="pr-4">
+                    <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                        <div fxFlex="85" class="pr-4">
+                            <app-input-select [formGroup]="formGroup" [elements]="cmbSetores" formControlName="setorId"
+                                pH="Setor" selectKey="id" selectValue="nome" required ngDefaultControl>
+                            </app-input-select>
+                        </div>
+                        <div fxFlex="15" class="pr-4">
+                            <mat-icon class="icon-tool-tip" color="primary" [matTooltip]="getTramitarEm().value">
+                                info</mat-icon>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                <mat-form-field appearance="outline" fxFlex="50" class="pr-4" class="mat-form-field--no-underline">
+                    <mat-label>Enviar email para autores?</mat-label>
+                    <input matInput style="display: none" value="-">
+                    <mat-checkbox formControlName="enviarEmailAutores"></mat-checkbox>
+                </mat-form-field>
+                <div fxFlex="50" class="pr-4" *ngIf="getTramitarEm().key !== ehFluxoDefinido">
+                    <app-input-select [formGroup]="formGroup" [elements]="cmbSituacoes" formControlName="situacaoId"
+                        pH="Situação" selectKey="id" selectValue="nome" required ngDefaultControl>
+                    </app-input-select>
+                </div>
+            </div>
+
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                <mat-form-field appearance="outline" fxFlex="100" class="pr-4">
+                    <mat-label>Observação</mat-label>
+                    <textarea matInput formControlName="observacao" required></textarea>
+                    <mat-error *ngIf="formGroup.controls.observacao.errors">A Observação é obrigatória</mat-error>
+                </mat-form-field>
+            </div>
+
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                <mat-tab-group [selectedIndex]="0" class="full-width">
+                    <mat-tab label="Anexos">
+                        <ng-template mat-tab-label>
+                            <div fxLayout="row wrap">
+                                <div class="text-center paddingTop4" fxFlex="80"
+                                    [matTooltip]="temAnexoObrigatorioParaEnviar() ? 'Há anexos obrigatórios.' : ''">
+                                    Anexos
+                                </div>
+                                <div class="text-center paddingTop0" fxFlex="20"
+                                    *ngIf="temAnexoObrigatorioParaEnviar()">
+                                    <mat-icon color="warn" matTooltip="Há anexos obrigatórios.">report_problem
+                                    </mat-icon>
+                                </div>
+                            </div>
+                        </ng-template>
+                        <mat-card-content class="mt-1">
+                            <mat-accordion class="full-width">
+                                <mat-expansion-panel>
+                                    <mat-expansion-panel-header>
+                                        <mat-panel-title>
+                                        </mat-panel-title>
+                                        <mat-panel-description>
+                                            {{(!data.detailsOnly ? 'Anexe os arquivos para o Tramite aqui' : 'Arquivos anexados no Tramite')}}
+                                        </mat-panel-description>
+                                    </mat-expansion-panel-header>
+
+                                    <mat-card-content>
+                                        <mat-chip-list></mat-chip-list>
+                                        <mat-table *ngIf="arquivos?.length" [dataSource]="dataSourceArquivos">
+                                            <ng-container matColumnDef="ArquivoNome">
+                                                <mat-header-cell class="mat-header-medium no-wrap" *matHeaderCellDef>
+                                                    Nome
+                                                </mat-header-cell>
+                                                <mat-cell class="mat-cell-medium no-wrap" *matCellDef="let arquivo">
+                                                    {{arquivo.nome}}
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="Tipo">
+                                                <mat-header-cell class="mat-header-medium no-wrap" *matHeaderCellDef>
+                                                    Tipo
+                                                </mat-header-cell>
+                                                <mat-cell class="mat-cell-medium no-wrap" *matCellDef="let arquivo">
+                                                    <mat-chip color="basic" selected>{{arquivo.tipo}}</mat-chip>
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="Obrigatorio">
+                                                <mat-header-cell class="mat-header-medium no-wrap" *matHeaderCellDef>
+                                                    Obrigatorio
+                                                </mat-header-cell>
+                                                <mat-cell class="mat-cell-medium no-wrap" *matCellDef="let arquivo">
+                                                    <mat-chip color="{{arquivo.obrigatorio ? 'warn' : 'basic'}}"
+                                                        selected>
+                                                        {{arquivo.obrigatorio ? 'Sim' : 'Não'}}</mat-chip>
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="Assinatura">
+                                                <mat-header-cell class="mat-header-medium no-wrap" *matHeaderCellDef>
+                                                    Assinatura
+                                                </mat-header-cell>
+                                                <mat-cell class="mat-cell-medium no-wrap" *matCellDef="let arquivo">
+                                                    <mat-chip
+                                                        color="{{arquivo.exigeAssinaturaDigital ? 'warn' : 'basic'}}"
+                                                        selected>
+                                                        {{arquivo.exigeAssinaturaDigital ? 'Sim' : 'Não'}}</mat-chip>
+                                                </mat-cell>
+                                            </ng-container>
+
+                                            <ng-container matColumnDef="Actions">
+                                                <mat-header-cell class="mat-header-small" *matHeaderCellDef>Ações
+                                                </mat-header-cell>
+                                                <mat-cell class="mat-cell-small" *matCellDef="let arquivo"
+                                                    class="text-center">
+
+                                                    <button mat-icon-button (click)="downloadArquivo(arquivo)"
+                                                        matTooltip="Baixar Modelo" [disabled]="!arquivo.hash">
+                                                        <mat-icon>cloud_download</mat-icon>
+                                                    </button>
+
+                                                    <button *ngIf="arquivo.fluxoItemTipoAnexoId" mat-icon-button
+                                                        (click)="openSelectFile(arquivo.fluxoItemTipoAnexoId)"
+                                                        matTooltip="{{arquivo.nome && arquivo.nome != '-'? 'Arquivo Anexado':'Anexar Arquivo'}}"
+                                                        color="{{arquivo.nome && arquivo.nome != '-'? 'primary':'accent'}}">
+                                                        <mat-icon>
+                                                            {{arquivo.nome && arquivo.nome != '-'? 'cloud_done':'cloud_upload'}}
+                                                        </mat-icon>
+                                                    </button>
+
+                                                    <button mat-icon-button
+                                                        *ngIf="!data.detailsOnly && !arquivo.fluxoItemTipoAnexoId"
+                                                        color="accent" (click)="deletaArquivo(arquivo)"
+                                                        matTooltip="Remover">
+                                                        <mat-icon>delete</mat-icon>
+                                                    </button>
+
+                                                </mat-cell>
+                                            </ng-container>
+                                            <mat-header-row *matHeaderRowDef="displayedColumnsArquivos">
+                                            </mat-header-row>
+                                            <mat-row *matRowDef="let row; columns: displayedColumnsArquivos;"></mat-row>
+                                        </mat-table>
+                                    </mat-card-content>
+
+                                    <div class="text-center">
+                                        <mat-card-actions>
+
+                                            <div fxLayout="row" fxFlex="100">
+                                                <div fxFlex="100" fxFlexAlign="center" class="text-center">
+                                                    <mat-form-field style="margin-top: 10px;"
+                                                        *ngIf="!data.detailsOnly && fluxoItemAnexos?.length">
+                                                        <mat-select #tipoAnexoSelect placeholder="Tipo de Arquivo">
+                                                            <mat-option *ngFor="let item of fluxoItemAnexos"
+                                                                [value]="item.id">
+                                                                {{item.fluxoTipoAnexo.nome}}
+                                                            </mat-option>
+                                                        </mat-select>
+                                                        <button type="button" mat-button *ngIf="tipoAnexoSelect?.value"
+                                                            matSuffix mat-icon-button aria-label="Clear"
+                                                            (click)="tipoAnexoSelect.value = null">
+                                                            <mat-icon>close</mat-icon>
+                                                        </button>
+                                                    </mat-form-field>
+                                                    <input #fileDocumentInput type="file" [hidden]="true" accept="*"
+                                                        (change)="anexaArquivoInMemory($event)">
+                                                    <button *ngIf="!data.detailsOnly" mat-raised-button
+                                                        style="margin-left: 7px" color="accent" #upload
+                                                        (click)="openSelectFile(tipoAnexoSelect?.value)">Anexar
+                                                        Novo</button>
+                                                </div>
+                                            </div>
+                                        </mat-card-actions>
+                                    </div>
+
+                                </mat-expansion-panel>
+                            </mat-accordion>
+                        </mat-card-content>
+                    </mat-tab>
+                    <mat-tab label="CheckList"
+                        *ngIf="getTramitarEm().key === ehFluxoDefinido && temFluxoItemChecklists()">
+                        <ng-template mat-tab-label>
+                            <div fxLayout="row wrap">
+                                <div class="text-center paddingTop4" fxFlex="80"
+                                    [matTooltip]="temCheckBoxParaChecar() ? 'Há itens a serem checados.' : ''">
+                                    CheckList
+                                </div>
+                                <div class="text-center paddingTop0" fxFlex="20" *ngIf="temCheckBoxParaChecar()">
+                                    <mat-icon color="warn" matTooltip="Há itens a serem checados.">report_problem
+                                    </mat-icon>
+                                </div>
+                            </div>
+                        </ng-template>
+                        <mat-card-content class="mt-1">
+                            <div class="text-center" formArrayName="tramiteChecklists">
+                                <div *ngFor="let item of formGroup.get('tramiteChecklists')?.controls; let i = index;"
+                                    [formGroupName]="i">
+                                    <mat-checkbox #checkBoxList formControlName="checado">
+                                        {{formGroup?.controls?.tramiteChecklists?.controls[i]?.controls?.nome?.value}}
+                                    </mat-checkbox>
+                                </div>
+                            </div>
+                        </mat-card-content>
+                    </mat-tab>
+                </mat-tab-group>
+            </div>
+
+        </form>
+
+    </div>
+
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+        <button type="button" mat-raised-button color="accent" *ngIf="!data.detailsOnly"
+            [disabled]="formGroup.invalid || temCheckBoxParaChecar() || temAnexoObrigatorioParaEnviar()"
+            (click)="save(formGroup.value, formGroup.valid, true)">
+            {{id ? 'Atualizar e Tramitar' : 'Salvar e Tramitar' }}
+        </button>
+        <button type="button" mat-raised-button color="primary" *ngIf="!data.detailsOnly"
+            [disabled]="formGroup.invalid || temCheckBoxParaChecar() || temAnexoObrigatorioParaEnviar()"
+            (click)="save(formGroup.value, formGroup.valid)">
+            {{id ? 'Atualizar' : 'Salvar' }}
+        </button>
+        <span fxFlex></span>
+        <button type="button" mat-raised-button color="basic" (click)="onCloseCancel()">Fechar</button>
+    </div>
+</div>

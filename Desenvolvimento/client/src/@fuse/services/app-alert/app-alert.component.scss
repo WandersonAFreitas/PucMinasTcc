@@ -1,0 +1,40 @@
+$custom-mat-info: (color: #03A9F4, contrast: #FCFCFC);
+$custom-mat-success: (color: #4CAF50, contrast: #FCFCFC);
+$custom-mat-warning: (color: #FF5722, contrast: #FCFCFC);
+$custom-mat-error: (color: #F44336, contrast: #FCFCFC);
+
+.success{ background-color: map-get($custom-mat-success,color); }
+.info{ background-color: map-get($custom-mat-info,color); }
+.warning{ background-color: map-get($custom-mat-warning,color); }
+.error{ background-color: map-get($custom-mat-error,color); }
+
+
+.custom-alert{
+    z-index: 9999;
+    width: 100%;
+    position: absolute;
+    color: map-get($custom-mat-success, contrast);
+    
+    .alert-div{
+        display: flow-root;
+        padding: 8px 16px 16px;
+     
+        h3{
+           margin-top: 8px;
+           mat-icon{
+            vertical-align: bottom;
+            margin-right: 8px;
+           }
+        }
+
+        .alert-close{
+            float: right;
+        }
+
+        .alert-content{
+            margin-top: 8px;
+            margin-left: 36px;
+        }
+        
+    }
+}

@@ -1,0 +1,143 @@
+<div class="page-layout simple fullwidth animated fadeIn">
+
+    <!-- HEADER -->
+    <div class="header accent p-24 h-160" fxLayout="row" fxLayoutAlign="space-between center">
+
+        <div fxLayout="column" fxLayoutAlign="center start">
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="secondary-text s-18">home</mat-icon>
+                <mat-icon class="secondary-text s-16">chevron_right</mat-icon>
+                <span class="secondary-text">Cadastro</span>
+                <mat-icon class="secondary-text s-16">chevron_right</mat-icon>
+                <span class="secondary-text">{{ id ? 'Edição' : 'Criação'}}</span>
+            </div>
+            <div class="h2 mt-16">Processo</div>
+        </div>
+
+        <div>
+            <mat-card-actions>
+                <button type="button" mat-raised-button color="primary" (click)="form.ngSubmit.emit()">
+                    {{id ? 'Atualizar' : 'Salvar' }}
+                </button>
+                <button *ngIf="id && !ehSituacaoFinal" type="button" mat-raised-button color="accent"
+                    [disabled]="formGroup.invalid" (click)="tramitar()">
+                    Tramitar
+                </button>
+                <button *ngIf="id && !entity.responsavelId" type="button" mat-raised-button color="accent"
+                    (click)="receber()">
+                    Receber
+                </button>
+                <button *ngIf="id" type="button" mat-raised-button color="accent" (click)="atribuir()">
+                    Atribuir
+                </button>
+                <button type="button" mat-raised-button color="basic" (click)="goBack()">
+                    Voltar
+                </button>
+            </mat-card-actions>
+        </div>
+
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT -->
+    <div class="content p-24">
+
+        <div class="mb-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-md="row">
+
+            <form #form="ngForm" class="mat-card p-24 mr-24" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto"
+                name="form" [formGroup]="formGroup" (ngSubmit)="save(formGroup.value, formGroup.valid)" novalidate>
+
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                    <mat-form-field appearance="outline" fxFlex="25" class="pr-4">
+                        <mat-label>Número</mat-label>
+                        <input matInput formControlName="sequencialAno">
+                    </mat-form-field>
+                    <div fxFlex="25" class="pr-4">
+                    </div>
+                    <div fxFlex="25" class="pr-4">
+                    </div>
+                    <mat-form-field appearance="outline" fxFlex="25" class="pr-4">
+                        <mat-label>Situação</mat-label>
+                        <input matInput formControlName="situacaoNome" required>
+                    </mat-form-field>
+                </div>
+
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                    <div fxFlex="30" class="pr-4">
+                        <app-input-autocomplete [formGroup]="formGroup" formControlName="empresaNome"
+                            formControKey="empresaId" [service]="_empresaService"
+                            [gridSettingsModel]="gridSettingsModelEmpresa" selectKey="id" selectValue="nome"
+                            pH="Empresa" ngDefaultControl required>
+                        </app-input-autocomplete>
+                    </div>
+                    <div fxFlex="50" class="pr-4">
+                        <app-input-select [formGroup]="formGroup" [elements]="cmbAssuntos" formControlName="assuntoId"
+                            pH="Assunto" selectKey="id" selectValue="nome" required ngDefaultControl>
+                        </app-input-select>
+                    </div>
+                    <div fxFlex="20" class="pr-4">
+                        <mat-icon *ngIf="assuntoOrientacoes" class="icon-tool-tip" color="primary"
+                            [matTooltip]="assuntoOrientacoes">info
+                        </mat-icon>
+                    </div>
+                </div>
+
+
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                    <mat-form-field appearance="outline" fxFlex="100" class="pr-4">
+                        <mat-label>Descrição</mat-label>
+                        <textarea matInput formControlName="descricao" required> </textarea>
+                    </mat-form-field>
+                </div>
+
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                    <mat-form-field appearance="outline" fxFlex="25" class="pr-4">
+                        <mat-label>Responsável</mat-label>
+                        <input matInput formControlName="responsavelNome">
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" fxFlex="25" class="pr-4">
+                        <mat-label>Setor</mat-label>
+                        <input matInput formControlName="setorNome">
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" fxFlex="25" class="pr-4">
+                        <mat-label>Ultima Movimentação</mat-label>
+                        <input matInput
+                            [value]="entity.ultimaAltercao ? (entity.ultimaAltercao | date:'dd/MM/yyyy hh:mm:ss') : '-'"
+                            disabled="true">
+                    </mat-form-field>
+                </div>
+
+                <div class="content-card">
+                    <mat-tab-group [selectedIndex]="0" (selectedIndexChange)="selectedIndexChange($event)">
+                        <mat-tab label="Trâmites" [disabled]="!id">
+                            <mat-card-content class="mt-1" *ngIf="entity.id">
+                                <processo-tab-tramites [processo]="entity" (notifyTramitado)="goBack()">
+                                </processo-tab-tramites>
+                            </mat-card-content>
+                        </mat-tab>
+                        <mat-tab label="Autores" [disabled]="!id">
+                            <mat-card-content class="mt-1" *ngIf="id">
+                                <processo-tab-autores [processo]="entity"></processo-tab-autores>
+                            </mat-card-content>
+                        </mat-tab>
+                        <mat-tab label="Anexos" [disabled]="!id">
+                            <mat-card-content class="mt-1">
+                                <processo-tab-anexos [processo]="entity"></processo-tab-anexos>
+                            </mat-card-content>
+                        </mat-tab>
+                        <mat-tab label="Modelos" [disabled]="!id">
+                            <mat-card-content class="mt-1" *ngIf="entity.id">
+                                <processo-tab-modelos [processo]="entity"></processo-tab-modelos>
+                            </mat-card-content>
+                        </mat-tab>
+                    </mat-tab-group>
+                </div>
+            </form>
+
+        </div>
+    </div>
+    <!-- / CONTENT -->
+
+</div>

@@ -1,0 +1,129 @@
+<div class="page-layout simple fullwidth animated fadeIn">
+
+    <!-- HEADER -->
+    <div class="header accent p-24 h-160" fxLayout="row" fxLayoutAlign="space-between center">
+
+        <div fxLayout="column" fxLayoutAlign="center start">
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="secondary-text s-18">home</mat-icon>
+                <mat-icon class="secondary-text s-16">chevron_right</mat-icon>
+                <span class="secondary-text">Cadastro</span>
+                <mat-icon class="secondary-text s-16">chevron_right</mat-icon>
+                <span class="secondary-text">{{ id ? 'Edição' : 'Criação'}}</span>
+            </div>
+            <div class="h2 mt-16">Monitoramento de Barragem</div>
+        </div>
+
+        <div>
+            <mat-card-actions>
+                <button type="button" mat-raised-button color="primary" [disabled]="formGroup.invalid"
+                    (click)="form.ngSubmit.emit()">
+                    {{id ? 'Atualizar' : 'Salvar' }}
+                </button>
+                <button type="button" mat-raised-button color="basic" (click)="goBack()">
+                    Voltar
+                </button>
+            </mat-card-actions>
+        </div>
+
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT -->
+    <div class="content p-24">
+
+        <div class="mb-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-md="row">
+
+            <form #form="ngForm" class="mat-card p-24 mr-24" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto"
+                name="form" [formGroup]="formGroup" (ngSubmit)="save(formGroup.value, formGroup.valid)" novalidate>
+
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                    <mat-form-field *ngIf="id" appearance="outline" fxFlex="50" class="pr-4">
+                        <mat-label>Código</mat-label>
+                        <input [disabled]="true" matInput formControlName="id">
+                    </mat-form-field>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                    <mat-form-field appearance="outline" fxFlex="40" class="pr-4">
+                        <mat-label>Descrição</mat-label>
+                        <input matInput formControlName="descricao" required>
+                        <mat-error *ngIf="formGroup.controls.descricao.errors">O descrição é obrigatório</mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex="30" class="pr-4">
+                        <mat-label>Observação</mat-label>
+                        <input matInput formControlName="observacao">
+                        <mat-error *ngIf="formGroup.controls.descricao.errors">O observação é obrigatório</mat-error>
+                    </mat-form-field>
+                    <div fxFlex="30" class="pr-4">
+                        <app-input-autocomplete [formGroup]="formGroup" formControlName="nivelMonitoramentoDescricao"
+                            formControKey="nivelMonitoramentoId" [service]="_nivelMonitoramentoService"
+                            [gridSettingsModel]="gridSettingsDescricaoModel" selectKey="id" selectValue="descricao"
+                            pH="Nível de monitoramento" ngDefaultControl readonly required>
+                        </app-input-autocomplete>
+                    </div>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                    <div fxFlex="40" class="pr-4">
+                        <app-input-autocomplete [formGroup]="formGroup" formControlName="barragemNome"
+                            formControKey="barragemId" [service]="_barragemService"
+                            [gridSettingsModel]="gridSettingsModel" selectKey="id" selectValue="nome" pH="Barragem"
+                            ngDefaultControl readonly required>
+                        </app-input-autocomplete>
+                    </div>
+                    <mat-form-field appearance="outline" fxFlex="30" class="pr-4">
+                        <mat-label>Nível</mat-label>
+                        <input matInput type="number" formControlName="nivel" required>
+                        <mat-error *ngIf="formGroup.controls.descricao.errors">O nível é obrigatório</mat-error>
+                    </mat-form-field>
+                    <div fxFlex="40" class="pr-4">
+                        <app-input-autocomplete [formGroup]="formGroup" formControlName="unidadeMedidaDescricao"
+                            formControKey="unidadeMedidaId" [service]="_unidadeMedidaService"
+                            [gridSettingsModel]="gridSettingsDescricaoModel" selectKey="id" selectValue="descricao"
+                            pH="Unidade de medida" ngDefaultControl readonly required>
+                        </app-input-autocomplete>
+                    </div>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                    <mat-form-field appearance="outline" fxFlex="30" class="pr-4">
+                        <mat-label>Data/hora</mat-label>
+                        <input matInput [matDatepicker]="dataHora" formControlName="dataHora" required>
+                        <mat-datepicker-toggle matSuffix [for]="dataHora"></mat-datepicker-toggle>
+                        <mat-datepicker #dataHora></mat-datepicker>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex="35" class="pr-4">
+                        <mat-label>Latitude</mat-label>
+                        <input matInput formControlName="latitude">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex="35" class="pr-4">
+                        <mat-label>Longitude</mat-label>
+                        <input matInput formControlName="longitude">
+                    </mat-form-field>
+                </div>
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                    <div fxFlex="35" class="pr-4">
+                        <app-input-autocomplete [formGroup]="formGroup" formControlName="sensorDescricao"
+                            formControKey="sensorId" [service]="_sensorService"
+                            [gridSettingsModel]="gridSettingsDescricaoModel" selectKey="id" selectValue="descricao" pH="Sensor"
+                            ngDefaultControl readonly>
+                        </app-input-autocomplete>
+                    </div>
+                    <div fxFlex="35" class="pr-4">
+                        <app-input-autocomplete [formGroup]="formGroup" formControlName="consultoriaNome"
+                            formControKey="consultoriaId" [service]="_consultoriaService"
+                            [gridSettingsModel]="gridSettingsModel" selectKey="id" selectValue="nome" pH="Consultoria"
+                            ngDefaultControl readonly>
+                        </app-input-autocomplete>
+                    </div>
+                    <div fxFlex="30" class="pr-4">
+                        <app-input-autocomplete [formGroup]="formGroup" formControlName="tipoMonitoramentoNome"
+                            formControKey="tipoMonitoramentoId" [service]="_tipoMonitoramentoService"
+                            [gridSettingsModel]="gridSettingsModel" selectKey="id" selectValue="nome" pH="Tipo de monitoramento"
+                            ngDefaultControl readonly required>
+                        </app-input-autocomplete>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- / CONTENT -->
+</div>

@@ -1,0 +1,37 @@
+<mat-tab-group>
+    <!-- <mat-tab label="Dados">
+    </mat-tab> -->
+    <mat-tab label="Login/Senha">
+        <div class="content p-24">
+            <form #form="ngForm" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto" name="form"
+                [formGroup]="formGroup" (ngSubmit)="save(formGroup.value, formGroup.valid)" novalidate>
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                    <mat-form-field appearance="outline" fxFlex="100" class="pr-4">
+                        <mat-label>Senha antiga</mat-label>
+                        <input matInput type="password" formControlName="oldPassword" value="" required>
+                        <mat-error>Obrigatório</mat-error>
+                    </mat-form-field>
+                </div>
+
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                    <mat-form-field appearance="outline" fxFlex="100" class="pr-4">
+                        <mat-label>Nova Senha</mat-label>
+                        <input matInput type="password" formControlName="newPassword" value="" required>
+                        <mat-error>Obrigatório</mat-error>
+                    </mat-form-field>
+                </div>
+
+
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                    <mat-form-field appearance="outline" fxFlex="100" class="pr-4">
+                        <mat-label>Confirmar nova senha</mat-label>
+                        <input matInput type="password" formControlName="checkPassword" value="" required>
+                        <mat-error>Obrigatório</mat-error>
+                    </mat-form-field>
+                </div>
+
+                <button type="submit" [disabled]="formGroup.invalid" mat-raised-button color="primary">Salvar</button>
+            </form>
+        </div>
+    </mat-tab>
+</mat-tab-group>

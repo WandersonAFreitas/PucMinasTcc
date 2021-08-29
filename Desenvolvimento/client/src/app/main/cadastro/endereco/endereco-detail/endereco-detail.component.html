@@ -1,0 +1,82 @@
+<div class="dialog-content-wrapper">
+
+    <mat-toolbar class="mat-accent m-0">
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">{{ id ? 'Editar endereço' : 'Adicionar endereço'}}</span>
+            <button mat-icon-button (click)="thisDialogRef.close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+
+    <div mat-dialog-content class="p-16 pb-0 m-0" fusePerfectScrollbar>
+        <form [formGroup]="formGroup" class="event-form w-100-p" fxLayout="column" fxFlex novalidate>
+
+
+
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                <mat-form-field appearance="outline" fxFlex="25" class="pr-4">
+                    <mat-label>CEP</mat-label>
+                    <input [formControl]="formGroup.controls['cep']" mask="XXXXX-XXX" matInput required
+                        (blur)="GetLogradouro()">
+                    <mat-error *ngIf="formGroup.controls.cep.errors">CEP é obrigatório</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline" fxFlex="55" class="pr-4">
+                    <mat-label>Logradouro</mat-label>
+                    <input matInput formControlName="logradouro" required>
+                    <mat-error *ngIf="formGroup.controls.logradouro.errors">O logradouro é obrigatório</mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline" fxFlex="20" class="pr-4">
+                    <mat-label>Número</mat-label>
+                    <input matInput formControlName="numero">
+                </mat-form-field>
+            </div>
+
+
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                <mat-form-field appearance="outline" fxFlex="40" class="pr-4">
+                    <mat-label>Complemento</mat-label>
+                    <input matInput formControlName="complemento">
+                </mat-form-field>
+                <mat-form-field appearance="outline" fxFlex="30" class="pr-4">
+                    <mat-label>Bairro</mat-label>
+                    <input matInput formControlName="bairro">
+                </mat-form-field>
+                <div fxFlex="30" class="pr-4">
+                    <app-input-autocomplete [formGroup]="formGroup" formControlName="municipioNome"
+                        formControKey="municipioId" [service]="_serviceMunicipio"
+                        [gridSettingsModel]="gridSettingsModelMunicipio" selectKey="id" selectValue="nome"
+                        pH="Município" ngDefaultControl></app-input-autocomplete>
+                </div>
+            </div>
+
+            <!-- <div fxLayout="row" fxLayoutWrap="wrap">
+                <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1">
+                    <div class="pb-1">
+                        <mat-form-field *ngIf="id" class="full-width">
+                            <input matInput placeholder="Código" formControlName="id">
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div fxFlex="100" fxFlex.gt-xs="50">
+                </div>
+            </div> -->
+
+            <div class="text-center">
+                <mat-card-actions>
+
+                </mat-card-actions>
+            </div>
+        </form>
+    </div>
+
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+        <button type="button" mat-raised-button color="primary" [disabled]="formGroup.invalid"
+            (click)="save(formGroup.value, formGroup.valid)">
+            {{id ? 'Atualizar' : 'Salvar' }}
+        </button>
+        <span fxFlex></span>
+        <button type="button" mat-raised-button color="basic" (click)="onCloseCancel()">Fechar</button>
+    </div>
+</div>

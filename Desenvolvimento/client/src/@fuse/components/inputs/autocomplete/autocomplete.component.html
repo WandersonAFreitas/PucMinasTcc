@@ -1,0 +1,23 @@
+<div [formGroup]="formGroup">
+    <mat-form-field appearance="outline" class="full-width">
+        <mat-label>{{pH}}</mat-label>
+
+        <input #input id="{{idd}}" matInput (keyup)="searchAutocomplete(input.value)" [matAutocomplete]="autocomplete"
+            formControlName="{{formControlName}}" (input)="onChange($event, input.value)" [required]="_required">
+
+        <button type="button" mat-button *ngIf="input.value" matSuffix mat-icon-button aria-label="Clear"
+            (click)="onClear()">
+            <mat-icon>close</mat-icon>
+        </button>
+
+        <mat-autocomplete #autocomplete="matAutocomplete" (optionSelected)="optionSelected($event)">
+            <mat-option *ngFor="let element of elements" [value]="element[selectKey]">
+                <small>{{element[selectValue]}}</small>
+            </mat-option>
+        </mat-autocomplete>
+
+        <mat-error>{{error}}</mat-error>
+        <mat-hint *ngIf="c.invalid">{{error}}</mat-hint>
+
+    </mat-form-field>
+</div>

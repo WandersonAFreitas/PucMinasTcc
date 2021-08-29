@@ -1,0 +1,47 @@
+.cdk-column-Actions  {
+    flex: 0 0 100px;
+}
+
+
+.cdk-column-Observacao  {
+    flex: 0 0 200px;
+}
+
+.element-row {
+    position: relative;
+  }
+  
+  .element-row:not(.expanded) {
+    cursor: pointer;
+  }
+  
+  .element-row:not(.expanded):hover {
+    background: #f5f5f5;
+  }
+  
+  .element-row.expanded {
+    border-bottom-color: transparent;
+    }
+
+
+
+    .cdk-column-Obrigatorio  {
+      flex: 0 0 70px;
+    }
+    
+    .cdk-column-Assinatura  {
+      flex: 0 0 70px;
+    }
+    
+    
+    .icon-tool-tip {
+        padding-top: 10px;
+    }
+    
+    .paddingTop0 {
+        padding-top: 0px;
+      }
+      
+      .paddingTop4 {
+        padding-top: 4px;
+      }

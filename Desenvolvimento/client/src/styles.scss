@@ -1,0 +1,89 @@
+// Import Fuse core library
+@import "@fuse/scss/core";
+
+// Import app.theme.scss
+@import "app/app.theme";
+
+
+@import "src/@fuse/scss/fuse";
+
+.event-form-dialog {
+
+    @include media-breakpoint('xs') {
+        width: 100%;
+    }
+
+    @include media-breakpoint('gt-xs') {
+        width: 480px;
+    }
+
+    .mat-dialog-container {
+        padding: 0;
+    }
+
+    .dialog-content-wrapper {
+        max-height: 85vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .primary-color-input,
+    .secondary-color-input {
+        padding: 6px 8px;
+    }
+}
+
+.full-width {
+    width: 100% !important;
+}
+
+.mat-form-field--no-underline .mat-input-underline {
+    background-color: transparent;
+}
+
+.my-table {
+    flex: 1 1 auto;
+    border-bottom: 1px solid rgba(0, 0, 0, .12);
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+
+    .mat-header-row {
+        min-height: 64px;
+    }
+
+    .mat-cell {
+        min-width: 0;
+        display: flex;
+        align-items: center;
+    }
+
+    .mat-column-id {
+        flex: 0 1 84px;
+    }
+
+    .mat-column-image {
+        flex: 0 1 84px;
+
+        .product-image {
+            width: 52px;
+            height: 52px;
+            border: 1px solid rgba(0, 0, 0, .12);
+        }
+    }
+
+    .mat-column-category {
+        flex: 0 1 240px;
+    }
+
+    .mat-column-price {
+        flex: 0 1 160px;
+    }
+
+    .mat-column-quantity {
+        flex: 0 1 160px;
+    }
+
+    .mat-column-active {
+        flex: 0 1 80px;
+    }
+}

@@ -1,0 +1,8 @@
+version: '3'
+services:
+  myapp_server:
+    build: .
+    ports:
+     - "5000:80"
+    env_file:
+     - docker-compose.env

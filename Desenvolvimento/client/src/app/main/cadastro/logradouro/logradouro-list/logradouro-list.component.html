@@ -1,0 +1,142 @@
+<div class="page-layout simple fullwidth animated fadeIn">
+
+    <!-- HEADER -->
+    <div class="header accent p-24 h-160" fxLayout="row" fxLayoutAlign="space-between center">
+
+        <div fxLayout="column" fxLayoutAlign="center start">
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="secondary-text s-18">home</mat-icon>
+                <mat-icon class="secondary-text s-16">chevron_right</mat-icon>
+                <span class="secondary-text">Cadastro</span>
+            </div>
+            <div class="h2 mt-16">Logradouros</div>
+        </div>
+
+        <div>
+            <!-- <button mat-raised-button (click)="create()" color="primary">Novo</button> -->
+        </div>
+
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT -->
+    <div class="content p-24">
+        <div class="animated fadeIn">
+            <mat-card hasDivider="true" class="p-0">
+                <mat-card-title class="">
+                    <div class="card-title-text">
+                    </div>
+                </mat-card-title>
+                <mat-card-content>
+                    <mat-accordion>
+                        <mat-expansion-panel>
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>
+                                    Filtro
+                                </mat-panel-title>
+                                <mat-panel-description>
+                                </mat-panel-description>
+                            </mat-expansion-panel-header>
+
+
+                            <mat-card-content>
+                                <div fxLayout="row" fxLayoutWrap="wrap">
+                                    <mat-form-field fxFlex="25" class="pr-16">
+                                        <input matInput placeholder="CEP" [(ngModel)]="entityFilter.cep" field="CEP"
+                                            op="cn" [model]="gridSettingsModel" gridSettings />
+                                    </mat-form-field>
+                                    <mat-form-field fxFlex="75" class="pr-16">
+                                        <input matInput placeholder="Endereço" [(ngModel)]="entityFilter.endereco"
+                                            field="Endereco" op="cn" [model]="gridSettingsModel" gridSettings />
+                                    </mat-form-field>
+                                </div>
+
+                                <div fxLayout="row" fxLayoutWrap="wrap">
+                                    <mat-form-field fxFlex="33" class="pr-16">
+                                        <input matInput placeholder="Pais" [(ngModel)]="entityFilter.pais.nome"
+                                            field="Pais.Nome" op="cn" [model]="gridSettingsModel" gridSettings />
+                                    </mat-form-field>
+                                    <mat-form-field fxFlex="33" class="pr-16">
+                                        <input matInput placeholder="Estado" [(ngModel)]="entityFilter.estado.nome"
+                                            field="Estado.Nome" op="cn" [model]="gridSettingsModel" gridSettings />
+                                    </mat-form-field>
+                                    <mat-form-field fxFlex="33" class="pr-16">
+                                        <input matInput placeholder="Município"
+                                            [(ngModel)]="entityFilter.municipio.nome" field="Municipio.Nome" op="cn"
+                                            [model]="gridSettingsModel" gridSettings />
+                                    </mat-form-field>
+                                </div>
+                            </mat-card-content>
+
+                            <div class="text-left">
+                                <mat-card-actions>
+                                    <button mat-raised-button (click)="search()" color="primary">Pesquisar</button>
+                                    <button mat-raised-button (click)="clear()" color="warn">Limpar</button>
+                                </mat-card-actions>
+                            </div>
+
+                        </mat-expansion-panel>
+                    </mat-accordion>
+                </mat-card-content>
+                <mat-table [dataSource]="dataSource" matSort (matSortChange)="baseSortData($event)">
+                    <ng-container matColumnDef="Actions">
+                        <mat-header-cell *matHeaderCellDef class="text-center"> Ação </mat-header-cell>
+                        <mat-cell *matCellDef="let element" class="text-center">
+                            <button mat-icon-button (click)="edit(element)" matTooltip="Detalhes">
+                                <mat-icon color="basic">zoom_in</mat-icon>
+                            </button>
+                            <!-- <button mat-icon-button (click)="delete(element)" matTooltip="Excluir">
+                                <mat-icon color="warn">delete</mat-icon>
+                            </button> -->
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Id">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Código </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.id}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="CEP">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> CEP </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.cep}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Endereco">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Endereco </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.endereco}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Bairro">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Bairro </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.bairro}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Pais.Nome">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> País </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element?.pais?.nome}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Estado.Nome">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Estado </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element?.estado?.nome}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Municipio.Nome">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Município </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element?.municipio?.nome}} </mat-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                </mat-table>
+
+                <mat-card *ngIf="pagination.totalElements == 0">Nenhum Resultado Encontrado.</mat-card>
+
+                <mat-paginator #paginator [pageSizeOptions]="[10, 25, 50, 100]" [length]="pagination.totalElements"
+                    [pageSize]="pagination.size" [showFirstLastButtons]="true" [hidePageSize]="false">
+                </mat-paginator>
+            </mat-card>
+        </div>
+    </div>
+    <!-- / CONTENT -->
+</div>

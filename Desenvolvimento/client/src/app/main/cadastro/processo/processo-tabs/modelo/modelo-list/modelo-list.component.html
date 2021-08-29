@@ -1,0 +1,32 @@
+<div class="animated fadeIn">
+  <mat-card-content>
+    <mat-table [dataSource]="dataSource" matSort (matSortChange)="baseSortData($event)" class="mat-elevation-z1">
+
+      <ng-container matColumnDef="Arquivo.Nome">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> Modelo Nome </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element?.arquivo?.nome}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="Actions">
+        <mat-header-cell *matHeaderCellDef class="text-center"> Ação </mat-header-cell>
+        <mat-cell *matCellDef="let element" class="text-center">
+          <button type="button" mat-icon-button (click)="downloadArquivo(element)" matTooltip="Baixar Anexo">
+            <mat-icon aria-label="icon-button with a face icon">cloud_download</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+
+    <mat-card *ngIf="pagination.totalElements == 0">Nenhum Resultado Encontrado.</mat-card>
+  </mat-card-content>
+
+  <mat-card-actions>
+    <mat-paginator #paginator [pageSizeOptions]="[10, 25, 50, 100]" [length]="pagination.totalElements"
+      [pageSize]="pagination.size" [showFirstLastButtons]="true" [hidePageSize]="false">
+    </mat-paginator>
+  </mat-card-actions>
+
+</div>

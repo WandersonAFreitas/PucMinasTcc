@@ -1,0 +1,118 @@
+<div class="page-layout simple fullwidth animated fadeIn">
+
+    <!-- HEADER -->
+    <div class="header accent p-24 h-160" fxLayout="row" fxLayoutAlign="space-between center">
+
+        <div fxLayout="column" fxLayoutAlign="center start">
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="secondary-text s-18">home</mat-icon>
+                <mat-icon class="secondary-text s-16">chevron_right</mat-icon>
+                <span class="secondary-text">Cadastro</span>
+            </div>
+            <div class="h2 mt-16">Fluxo</div>
+        </div>
+
+        <div>
+            <button mat-raised-button (click)="create()" color="primary">Novo</button>
+        </div>
+
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT -->
+    <div class="content p-24">
+        <div class="animated fadeIn">
+            <mat-card hasDivider="true" class="p-0">
+                <mat-card-title class="">
+                    <div class="card-title-text">
+                    </div>
+                </mat-card-title>
+                <mat-card-content>
+                    <mat-accordion>
+                        <mat-expansion-panel>
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>
+                                    Filtro
+                                </mat-panel-title>
+                                <mat-panel-description>
+                                </mat-panel-description>
+                            </mat-expansion-panel-header>
+
+
+                            <mat-card-content>
+                                <div fxLayout="row" fxLayoutWrap="wrap">
+                                    <mat-form-field fxFlex="50" class="pr-16">
+                                        <input matInput placeholder="Código" [(ngModel)]="entityFilter.id" field="Id"
+                                            op="eq" [model]="gridSettingsModel" gridSettings />
+                                    </mat-form-field>
+
+                                    <mat-form-field fxFlex="25" class="pr-16">
+                                        <input matInput placeholder="Descrição" [(ngModel)]="entityFilter.descricao"
+                                            field="Descricao" op="cn" [model]="gridSettingsModel" gridSettings />
+                                    </mat-form-field>
+
+                                    <mat-form-field fxFlex="25">
+                                        <mat-select placeholder="Ativo" [(ngModel)]="entityFilter.ativo" field="Ativo"
+                                            op="eq" [model]="gridSettingsModel" gridSettings>
+                                            <mat-option *ngFor="let ativo of ativoFilter" [value]="ativo.key">
+                                                {{ativo.value}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </mat-card-content>
+
+                            <div class="text-left">
+                                <mat-card-actions>
+                                    <button mat-raised-button (click)="search()" color="primary">Pesquisar</button>
+                                    <button mat-raised-button (click)="clear()" color="warn">Limpar</button>
+                                </mat-card-actions>
+                            </div>
+
+                        </mat-expansion-panel>
+                    </mat-accordion>
+                </mat-card-content>
+                <mat-table [dataSource]="dataSource" matSort (matSortChange)="baseSortData($event)">
+                    <ng-container matColumnDef="Actions">
+                        <mat-header-cell *matHeaderCellDef class="text-center"> Ação </mat-header-cell>
+                        <mat-cell *matCellDef="let element" class="text-center">
+                            <button mat-icon-button (click)="edit(element)" matTooltip="Editar">
+                                <mat-icon color="accent" aria-label="Example icon-button with a face icon">mode_edit
+                                </mat-icon>
+                            </button>
+                            <button mat-icon-button (click)="delete(element)" matTooltip="Excluir">
+                                <mat-icon color="warn" aria-label="Example icon-button with a face icon">delete
+                                </mat-icon>
+                            </button>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Id">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Código </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.id}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Descricao">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Descrição </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.descricao}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Ativo">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header> Ativo </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.ativo ? 'Sim' : 'Não'}} </mat-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                </mat-table>
+
+                <mat-card *ngIf="pagination.totalElements == 0">Nenhum Resultado Encontrado.</mat-card>
+
+                <mat-paginator #paginator [pageSizeOptions]="[10, 25, 50, 100]" [length]="pagination.totalElements"
+                    [pageSize]="pagination.size" [showFirstLastButtons]="true" [hidePageSize]="false">
+                </mat-paginator>
+            </mat-card>
+        </div>
+    </div>
+    <!-- / CONTENT -->
+</div>

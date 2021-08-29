@@ -1,0 +1,84 @@
+<div class="page-layout simple fullwidth animated fadeIn">
+
+    <!-- HEADER -->
+    <div class="header accent p-24 h-160" fxLayout="row" fxLayoutAlign="space-between center">
+
+        <div fxLayout="column" fxLayoutAlign="center start">
+            <div fxLayout="row" fxLayoutAlign="start center">
+                <mat-icon class="secondary-text s-18">home</mat-icon>
+                <mat-icon class="secondary-text s-16">chevron_right</mat-icon>
+                <span class="secondary-text">Cadastro</span>
+                <mat-icon class="secondary-text s-16">chevron_right</mat-icon>
+                <span class="secondary-text">{{ id ? 'Edição' : 'Criação'}}</span>
+            </div>
+            <div class="h2 mt-16">Empresa</div>
+        </div>
+
+        <div>
+            <mat-card-actions>
+                <button type="button" mat-raised-button color="primary" [disabled]="formGroup.invalid"
+                    (click)="form.ngSubmit.emit()">
+                    {{id ? 'Atualizar' : 'Salvar' }}
+                </button>
+                <button type="button" mat-raised-button color="basic" (click)="goBack()">
+                    Voltar
+                </button>
+            </mat-card-actions>
+        </div>
+
+    </div>
+    <!-- / HEADER -->
+
+    <!-- CONTENT -->
+    <div class="content p-24">
+
+        <div class="mb-24" fxLayout="column" fxLayoutAlign="start" fxLayout.gt-md="row">
+
+            <form #form="ngForm" class="mat-card p-24 mr-24" fxLayout="column" fxLayoutAlign="start" fxFlex="1 0 auto"
+                name="form" [formGroup]="formGroup" (ngSubmit)="save(formGroup.value, formGroup.valid)" novalidate>
+
+                <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                    <mat-form-field appearance="outline" fxFlex="40" class="pr-4">
+                        <mat-label>Nome</mat-label>
+                        <input matInput formControlName="nome" required>
+                        <mat-error *ngIf="formGroup.controls.nome.errors">O nome é obrigatório</mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex="40" class="pr-4">
+                        <mat-label>Sigla</mat-label>
+                        <input matInput formControlName="sigla" required>
+                        <mat-error *ngIf="formGroup.controls.sigla.errors">A sigla é obrigatória</mat-error>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" fxFlex="20" class="pr-4" class="mat-form-field--no-underline">
+                        <mat-label>Ativo?</mat-label>
+                        <input matInput style="display: none" value="-">
+                        <mat-checkbox formControlName="ativo"></mat-checkbox>
+                    </mat-form-field>
+                </div>
+
+                <div class="content-card">
+                    <mat-tab-group [selectedIndex]="0" (selectedIndexChange)="selectedIndexChange($event)">
+                        <mat-tab label="Setores" [disabled]="!id">
+                            <mat-card-content class="mt-1" *ngIf="id">
+                                <empresa-tab-setor-grid add [empresa]="entity" [setores]="entity.setores">
+                                </empresa-tab-setor-grid>
+                            </mat-card-content>
+                        </mat-tab>
+                        <mat-tab label="Assuntos" [disabled]="!id">
+                            <mat-card-content class="mt-1">
+                                <empresa-tab-assuntos [empresa]="entity"></empresa-tab-assuntos>
+                            </mat-card-content>
+                        </mat-tab>
+                        <mat-tab label="Endereço" [disabled]="!id">
+                            <mat-card-content class="mt-1">
+                                <app-endereco-list [referenciaId]="id" [tipo]="'Empresa'"></app-endereco-list>
+                            </mat-card-content>
+                        </mat-tab>
+                    </mat-tab-group>
+                </div>
+            </form>
+
+        </div>
+    </div>
+    <!-- / CONTENT -->
+
+</div>

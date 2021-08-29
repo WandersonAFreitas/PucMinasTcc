@@ -1,0 +1,17 @@
+<div [formGroup]="formGroup">
+    <mat-form-field appearance="outline" class="full-width">
+
+        <mat-label>{{pH}}</mat-label>
+
+        <mat-select #input id="{{idd}}" (selectionChange)="onChange($event, input.value)" [required]="_required"
+            formControlName="{{formControlName}}">
+            <mat-option *ngFor="let element of elements" [value]="element[selectKey]">
+                {{element[selectValue]}}
+            </mat-option>
+        </mat-select>
+
+        <mat-error>{{error}}</mat-error>
+        <mat-hint *ngIf="c.invalid">{{error}}</mat-hint>
+
+    </mat-form-field>
+</div>

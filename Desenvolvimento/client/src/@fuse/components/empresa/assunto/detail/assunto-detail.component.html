@@ -1,0 +1,111 @@
+<div class="dialog-content-wrapper">
+
+    <mat-toolbar class="mat-accent m-0">
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">{{ id ? 'Edição' : 'Criação'}} de Assunto</span>
+            <button mat-icon-button (click)="thisDialogRef.close()" aria-label="Close dialog">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+
+
+    <div mat-dialog-content class="p-16 pb-0 m-0" fusePerfectScrollbar>
+        <form [formGroup]="formGroup" class="event-form w-100-p" fxLayout="column" fxFlex novalidate>
+
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                <mat-form-field appearance="outline" fxFlex="70" class="pr-4">
+                    <mat-label>Nome</mat-label>
+                    <input matInput formControlName="nome" required>
+                    <mat-error *ngIf="formGroup.controls.nome.errors">O nome é obrigatório</mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" fxFlex="30" class="pr-4" class="mat-form-field--no-underline">
+                    <mat-label>Ativo?</mat-label>
+                    <input matInput style="display: none" value="-">
+                    <mat-checkbox formControlName="ativo"></mat-checkbox>
+                </mat-form-field>
+            </div>
+
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+                <mat-form-field appearance="outline" fxFlex="100" class="pr-4">
+                    <mat-label>Orientação</mat-label>
+                    <textarea matInput formControlName="orientacoes"> </textarea>
+                    <mat-error *ngIf="formGroup.controls.orientacoes.errors">O nome é obrigatório</mat-error>
+                </mat-form-field>
+            </div>
+
+            <div fxLayout="row" fxLayoutAlign="start center" fxFlex="1 0 auto">
+
+                <mat-accordion class="full-width">
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                Anexar Modelos
+                            </mat-panel-title>
+                            <mat-panel-description>
+                                Anexe os modelos para o assunto aqui
+                            </mat-panel-description>
+                        </mat-expansion-panel-header>
+
+                        <mat-card-content>
+                            <mat-table *ngIf="arquivos?.length" [dataSource]="dataSourceArquivos">
+                                <ng-container matColumnDef="ArquivoNome">
+                                    <mat-header-cell class="mat-header-medium no-wrap" *matHeaderCellDef> Nome
+                                        do
+                                        Arquivo
+                                    </mat-header-cell>
+                                    <mat-cell class="mat-cell-medium no-wrap" *matCellDef="let arquivo">
+                                        {{arquivo.nome}}
+                                    </mat-cell>
+                                </ng-container>
+                                <ng-container matColumnDef="Actions">
+                                    <mat-header-cell class="mat-header-small" *matHeaderCellDef>Ações
+                                    </mat-header-cell>
+                                    <mat-cell class="mat-cell-small" *matCellDef="let arquivo" class="text-center">
+                                        <button mat-icon-button (click)="downloadArquivo(arquivo)"
+                                            matTooltip="Baixar Modelo" [disabled]="!arquivo.id">
+                                            <mat-icon aria-label="icon-button with a face icon">cloud_download
+                                            </mat-icon>
+                                        </button>
+                                        <button mat-icon-button color="accent" (click)="deletaArquivo(arquivo)"
+                                            matTooltip="Remover">
+                                            <mat-icon aria-label="icon-button with a face icon">delete
+                                            </mat-icon>
+                                        </button>
+                                    </mat-cell>
+                                </ng-container>
+                                <mat-header-row *matHeaderRowDef="displayedColumnsArquivos"></mat-header-row>
+                                <mat-row *matRowDef="let row; columns: displayedColumnsArquivos;"></mat-row>
+                            </mat-table>
+                        </mat-card-content>
+
+                        <div class="text-center">
+                            <mat-card-actions>
+                                <input #fileDocumentInput type="file" [hidden]="true" accept="*"
+                                    (change)="anexaArquivoInMemory($event)">
+                                <button mat-raised-button style="margin-left: 7px" color="accent" #upload
+                                    (click)="fileDocumentInput.click()">Anexar
+                                    Novo</button>
+                                <!-- <button mat-raised-button style="margin-left: 7px" color="primary" #upload (click)="salvarArquivos()"
+              [disabled]="!arquivos?.length">Salvar</button> -->
+                            </mat-card-actions>
+                        </div>
+
+                    </mat-expansion-panel>
+                </mat-accordion>
+            </div>
+
+        </form>
+
+    </div>
+
+    <div mat-dialog-actions class="m-0 p-16" fxLayout="row" fxLayoutAlign="end center">
+        <button type="button" mat-raised-button color="primary" [disabled]="formGroup.invalid"
+            (click)="save(formGroup.value, formGroup.valid)">
+            {{id ? 'Atualizar' : 'Salvar' }}
+        </button>
+        <span fxFlex></span>
+        <button type="button" mat-raised-button color="basic" (click)="onCloseCancel()">Fechar</button>
+    </div>
+</div>

@@ -1,0 +1,21 @@
+  
+.element-row {
+    position: relative;
+  }
+  
+  .element-row:not(.expanded) {
+    cursor: pointer;
+  }
+  
+  .element-row:not(.expanded):hover {
+    background: #f5f5f5;
+  }
+  
+  .element-row.expanded {
+    border-bottom-color: transparent;
+  }
+
+
+.cdk-column-Actions  {
+    flex: 0 0 100px;
+}
